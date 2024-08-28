@@ -15,15 +15,17 @@ public class Main {
             info.add(Arrays.asList(bf.readLine().split(" ")));
         }
 
+        // 학점 * 성적의 합계 구하기
         totalScore = info.stream().
-                map(insideList -> Double.valueOf(insideList.get(1)) * whichGrade(insideList.get(2)))
-                .mapToDouble(Double::doubleValue)
-                .sum();
+                map(insideList -> Double.valueOf(insideList.get(1)) * whichGrade(insideList.get(2))) // 학점 * 성적 연산
+                .mapToDouble(Double::doubleValue) // 연산 결과 리스트를 DoubleStream 형태로 변환
+                .sum(); // 총합 구하기
 
-        totalStudyPoint = info.stream().filter(insideList -> !(insideList.get(2).equals("P")))
-                .map(insideList -> Double.valueOf(insideList.get(1)))
-                .mapToDouble(Double::doubleValue)
-                .sum();
+        // 학점 총합 구하기
+        totalStudyPoint = info.stream().filter(insideList -> !(insideList.get(2).equals("P"))) // 필터를 사용해 과목 점수가 P인 과목은 제외
+                .map(insideList -> Double.valueOf(insideList.get(1))) // P가 제외된 과목의 학점들 수집
+                .mapToDouble(Double::doubleValue) // 해당 학점들 Double Stream으로 변환
+                .sum(); // 총합 구하기
 
         System.out.printf("%.6f",(totalScore / totalStudyPoint));
     }
