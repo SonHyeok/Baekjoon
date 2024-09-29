@@ -9,26 +9,34 @@ public class Main {
      * N! / (N - K)! * K!
      * factorial 함수 필요
      */
+    static int[][] dp;
 
     public static void main(String[] args) throws IOException {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
         StringTokenizer st = new StringTokenizer(br.readLine());
+
         int n = Integer.parseInt(st.nextToken());
         int k = Integer.parseInt(st.nextToken());
 
+        dp = new int[n + 1][k + 1];
 
-        bw.write(factorial(n) / (factorial(n - k) * factorial(k)) + "\n");
+        bw.write(Integer.toString(factorial(n,k)));
         bw.flush();
         bw.close(); br.close();
     }
 
-    public static int factorial(int n) {
-        if (n == 1 || n == 0) {
-            return 1;
-        }else{
-            return n * factorial(n - 1);
+    public static int factorial(int n, int k) {
+        if (dp[n][k] > 0) {
+            return dp[n][k];
         }
+
+        if (n == k || k == 0) {
+            return 1;
+        }
+
+        return dp[n][k] = factorial(n - 1, k - 1) + factorial(n - 1, k);
     }
 }
