@@ -9,19 +9,20 @@ public class Main {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
         int count = Integer.parseInt(br.readLine());
-        int[] numList = new int[count];
+        int[] numList = new int[10001];
 
         for (int i = 0; i < count; i++) {
-            int num = Integer.parseInt(br.readLine());
-            numList[i] = num;
+            numList[Integer.parseInt(br.readLine())]++;
         }
 
-        Arrays.sort(numList);
-        for (int i : numList) {
-            bw.write(i + "\n");
+        for (int i = 0; i < 10001; i++) {
+            while (numList[i] > 0) {
+                bw.write(i + "\n");
+                numList[i]--;
+            }
         }
+
         bw.flush();
-        bw.close();
-        br.close();
+        bw.close(); br.close();
     }
 }
