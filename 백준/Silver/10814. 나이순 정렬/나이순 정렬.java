@@ -1,10 +1,9 @@
 import java.io.*;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
     /**
-     * 2차원 String 배열로 받아서, 나이만으로 정렬
+     * StringBuilder를 사용해서 성능 개선
      */
     public static void main(String[] args) throws IOException {
 
@@ -13,23 +12,26 @@ public class Main {
         StringTokenizer st;
 
         int count = Integer.parseInt(br.readLine());
-        String[][] list = new String[count][2];
 
-        for (int i = 0; i < count; i++) {
+        StringBuilder[] sb = new StringBuilder[201];
+
+        for (int i = 0; i < sb.length; i++) {
+            sb[i] = new StringBuilder();
+        }
+        
+        for (int i = 0; i < count; i++) { // counting Sort 사용
             st = new StringTokenizer(br.readLine());
+            int age = Integer.parseInt(st.nextToken());
 
-            list[i][0] = st.nextToken();
-            list[i][1] = st.nextToken();
+            sb[age].append(age).append(" ").append(st.nextToken()).append("\n"); // 나이에 해당하는 인덱스에 이름 입력, 순서대로 입력되므로 나이가 같아도 알아서 정렬되어 있는 구조
         }
 
-        Arrays.sort(list, (s1, s2) -> Integer.parseInt(s1[0]) - Integer.parseInt(s2[0]));
-
-        for (int i = 0; i < count; i++) {
-            bw.write(list[i][0] + " " + list[i][1] + "\n");
+        for (StringBuilder stringBuilder : sb) {
+            bw.write(stringBuilder.toString());
         }
-
         bw.flush();
-        bw.close(); br.close();
+        bw.close();
+        br.close();
     }
 
 }
