@@ -41,10 +41,6 @@ public class Main {
             }
         }
 
-        // 마지막 출력에 \n을 없애야 함. sb가 비어있지 않고, 길이에서 1을 뺐을 때 0보다 크거나
-        if(sb.length() != 0 && sb.charAt(sb.length() - 1) == '\n'){
-            sb.deleteCharAt(sb.length() - 1);
-        }
         System.out.print(sb);
     }
 }
