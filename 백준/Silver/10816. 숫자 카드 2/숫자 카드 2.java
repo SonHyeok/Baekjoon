@@ -1,56 +1,72 @@
 import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
 
 public class Main {
 
-    /**
-     * 1 <= N,M <= 500,000
-     * 각 입력되는 수는 - 10,000,000 ~ 10,000,000 사이의 크기
-     * N개의 입력된 수에 M개의 입력된 수가 얼마나 포함되어 있는지 확인하기
-     * HashMap을 사용해서 처음 N개 입력 받을때 각 수가 몇개씩 입력 받았는지 입력 받은 숫자를 KEY, 개수를 VALUE로 설정
-     *
-     */
     public static void main(String[] args) throws IOException {
+
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st;
+        int card1 = Integer.parseInt(br.readLine()); // 가지고 있는 숫자 카드
+        int[] list = new int[card1];
 
-        int N = Integer.valueOf(br.readLine());
-
-        Map<Integer, Integer> numbers = new HashMap<>();
-
-        String[] nums = br.readLine().split(" "); // 숫자들을 입력받음
-        
-        for (int i = 0; i < N; i++) {
-            int num = Integer.valueOf(nums[i]); // int형으로 캐스팅
-
-            if (numbers.containsKey(num)) { // 숫자가 존재할 경우
-                numbers.put(num, numbers.get(num) + 1);
-            }else{ // 숫자가 없을 경우
-                numbers.put(num, 1);
-            }
+        st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < card1; i++) {
+            list[i] = Integer.valueOf(st.nextToken());
         }
+        Arrays.sort(list);
 
-        int M = Integer.valueOf(br.readLine());
-        nums = br.readLine().split(" "); // 숫자들을 입력받음
+        int card2 = Integer.parseInt(br.readLine()); // 찾으려는 숫자 카드
+        st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < card2; i++) {
+            int findNum = Integer.parseInt(st.nextToken());
 
-        for (int i = 0; i < M; i++) {
-            int num = Integer.valueOf(nums[i]); // int 형으로 캐스팅
+            int upperNum = upperBound(list, findNum);
+            int lowerNum = lowerBound(list, findNum);
 
-            if (numbers.containsKey(num)) { // 숫자가 존재할 경우
-                bw.write(numbers.get(num) + " ");
-            }else{ // 숫자가 없을 경우
-                bw.write(0 + " ");
-            }
+            bw.write(upperNum - lowerNum + " ");
         }
 
         bw.flush();
         bw.close();
         br.close();
     }
+
+    public static int upperBound(int[] list, int key) {
+        int high = list.length;
+        int low = 0;
+
+        while (low < high) {
+            int mid = (high + low) / 2;
+
+            if (key < list[mid]) {
+                high = mid;
+            }else{
+                low = mid + 1;
+            }
+        }
+        return low;
+    }
+
+
+    public static int lowerBound(int[] list, int key) {
+        int high = list.length;
+        int low = 0;
+
+        while (low < high) {
+            int mid = (high + low) / 2;
+
+            if (key <= list[mid]) {
+                high = mid;
+            }else{
+                low = mid + 1;
+            }
+        }
+        return low;
+    }
+
+
 }
-
-
-
-
-
