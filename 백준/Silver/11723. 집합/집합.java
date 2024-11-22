@@ -11,45 +11,43 @@ public class Main {
         StringTokenizer st;
 
         int count = Integer.parseInt(br.readLine());
-        Set<Integer> set = new HashSet<>();
+        int set = 0;
 
         for (int i = 0; i < count; i++) {
             st = new StringTokenizer(br.readLine());
 
             String command = st.nextToken();
+            int num = 0;
 
-            if (command.equals("all")) {
-                set.clear();
-
-                for (int j = 1; j <= 20; j++) {
-                    set.add(j);
-                }
-            } else if (command.equals("empty")) {
-                set.clear();
-            }
-            else{
-
-                int num = Integer.parseInt(st.nextToken());
-
-                if (command.equals("add")) {
-                    set.add(num);
-                } else if (command.equals("remove")) {
-                    set.remove(num);
-                } else if (command.equals("check")) {
-                    if (set.contains(num)) {
-                        bw.write("1\n");
-                        continue;
+            switch(command) {
+                case "all":
+                    set = (1 << 21) - 1;
+                    break;
+                case "empty":
+                    set = 0;
+                    break;
+                default:
+                    num = Integer.parseInt(st.nextToken());
+                    switch (command){
+                        case "add" :
+                            set |= 1 << num;
+                            break;
+                        case "remove":
+                            set &= ~(1 << num);
+                            break;
+                        case "check":
+                            if ((set & (1 << num)) != 0) {
+                                bw.write("1\n");
+                            } else {
+                                bw.write("0\n");
+                            }
+                            break;
+                        case "toggle":
+                            set ^= 1 << num;
+                            break;
                     }
-                    bw.write("0\n");
-                } else if (command.equals("toggle")) {
-                    if (set.contains(num)) {
-                        set.remove(num);
-                        continue;
-                    }
-                    set.add(num);
-                }
-            }
 
+            }
         }
         bw.flush();
         bw.close();
