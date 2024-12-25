@@ -13,8 +13,6 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-
         // 입력받을 직사각형 가로 길이
         int N = Integer.parseInt(br.readLine());
 
@@ -23,20 +21,15 @@ public class Main {
 
         dp[0] = 1;
         dp[1] = 1;
-        
-        bw.write(String.valueOf(recur(N)));
-        
-        
-        bw.flush();
-        bw.close();
-        br.close();
-    }
 
-
-    static int recur(int n) {
-        if (dp[n] == 0) {
-            return dp[n] = ((recur(n - 2) * 2) + recur(n - 1)) % 10007;
+        for (int i = 2; i <= N; i++) {
+            dp[i] = ((dp[i - 2] * 2) + dp[i - 1]) % 10007;
         }
-        return dp[n];
+
+        System.out.println(dp[N]);
+
     }
+
+
+
 }
