@@ -3,7 +3,7 @@ import java.io.*;
 /**
  * 작은 문제들을 나열하다보면,  숫자 i는 자신의 제곱수(dp[j*j])들을 기준으로 제곱수를 뺀 나머지 값의 합을 구하면 된다.
  * 따라서 아래와 같은 점화식을 세울 수 있다.
- *  dp[i] = dp[i - j*j] + dp[j*j]
+ *  dp[n] = min(dp[n - k²] + 1)
  *
  */
 public class Main {
