@@ -23,13 +23,8 @@ public class Main {
         me = Integer.parseInt(st.nextToken());
         bro = Integer.parseInt(st.nextToken());
 
-        if(me == bro){ bw.write(String.valueOf(0));}
-        else{
-            bfs(me);
-            bw.write(String.valueOf(check[bro]));
-        }
-
-
+        bfs(me);
+        bw.write(String.valueOf(check[bro]));
 
         bw.flush();
         bw.close();
@@ -37,35 +32,35 @@ public class Main {
     }
 
     static void bfs(int start) {
-
-        // 시작 위치
-        visited[start] = true;
-
         Queue<Integer> queue = new LinkedList<>();
 
-        // 시작 위치 큐에 추가
+        visited[start] = true;
         queue.offer(start);
 
         while (!queue.isEmpty()) {
-            // 현재 위치
             Integer now = queue.poll();
 
-            visited[now] = true;
-
-            if (now + 1 < check.length && check[now + 1] == 0) {
-                check[now + 1] = check[now] + 1;
-                queue.offer(now + 1);
+            // 목표 위치 도달하면 종료
+            if (now == bro) {
+                return;
             }
 
-            if (now - 1 >= 0 && check[now - 1] == 0) {
-                check[now - 1] = check[now] + 1;
-                queue.offer(now - 1);
-            }
+            // 이동할 위치들
+            int[] nexts = {now + 1, now - 1, now * 2};
 
-            if (now * 2 < check.length && check[now * 2] == 0) {
-                check[now * 2] = check[now] + 1;
-                queue.offer(now * 2);
+            for (int next : nexts) {
+                if (next >= 0 && next < check.length && !visited[next]) {
+                    // 횟수 추가
+                    check[next] = check[now] + 1;
+                    
+                    // 큐에 이동할 점 추가
+                    queue.offer(next);
+
+                    // 이동 기록
+                    visited[next] = true;
+                }
             }
         }
     }
 }
+
