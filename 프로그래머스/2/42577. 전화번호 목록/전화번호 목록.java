@@ -7,7 +7,7 @@ class Solution {
         
         // 다른 번호에서 접두사의 위치가 0번째 인덱스인 경우 false
         for(int i = 0; i < phone_book.length - 1; i++){
-            if(phone_book[i+1].startsWith(phone_book[i])){
+            if(phone_book[i+1].indexOf(phone_book[i]) == 0){
                 answer = false;
                 break;
             } 
