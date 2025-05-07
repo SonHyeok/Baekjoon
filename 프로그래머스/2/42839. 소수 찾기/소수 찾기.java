@@ -9,7 +9,8 @@ class Solution {
         dfs("",numbers,0);
         
         for(int num : set){
-            if(isPrime(num)) answer++;
+            if(num == 2) answer++;
+            if(num % 2 != 0 && isPrime(num)) answer++;
         }
         return answer;
     }
@@ -31,7 +32,7 @@ class Solution {
     static boolean isPrime(int num){
         if(num < 2) return false;
         
-        for(int i = 2; i <= Math.sqrt(num); i++){
+        for(int i = 3; i <= Math.sqrt(num); i += 2){
             if(num % i == 0) return false;
         }
         
