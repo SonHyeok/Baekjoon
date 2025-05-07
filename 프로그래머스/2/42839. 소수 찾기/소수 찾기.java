@@ -6,7 +6,7 @@ class Solution {
     public int solution(String numbers) {
         int answer = 0;
 
-        dfs("",numbers,0);
+        dfs("",numbers);
         
         for(int num : set){
             if(num == 2) answer++;
@@ -15,18 +15,14 @@ class Solution {
         return answer;
     }
     
-    static void dfs(String s, String numbers, int depth){
-        if(depth > numbers.length()) return;
+    static void dfs(String s, String numbers){
+        int n = numbers.length();
+        
+        if(!s.equals("")) set.add(Integer.parseInt(s));
         
         for(int i = 0; i < numbers.length(); i++){
-            if(!visit[i]){
-                visit[i] = true;
-                set.add(Integer.parseInt(s + numbers.charAt(i)));
-                dfs(s + numbers.charAt(i), numbers, depth + 1);
-                visit[i] = false;
-            }
+            dfs(s + numbers.charAt(i), numbers.substring(0,i) + numbers.substring(i + 1, n));
         }
-        
     }
     
     static boolean isPrime(int num){
