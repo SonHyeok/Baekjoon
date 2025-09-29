@@ -4,34 +4,28 @@ import java.util.*;
 
 class Solution {
     public int[] solution(int[] progresses, int[] speeds) {
-        int[] answer = {};
-        Queue<Integer> queue = new LinkedList<>();
         List<Integer> list = new ArrayList<>();
+        Queue<Integer> queue = new LinkedList<>();
         
         for(int i = 0; i < progresses.length; i++){
-            // 작업에 소요되는 일수 계산
-            int days = (100 - progresses[i]) % speeds[i] == 0 ? 
-                (100 - progresses[i]) / speeds[i] : ((100 - progresses[i]) / speeds[i]) + 1;
+            int curProgress = 100 - progresses[i];
+            int date = curProgress % speeds[i] == 0 ? curProgress / speeds[i] 
+                : curProgress / speeds[i] + 1;
             
-            // 작업에 소요되는 일 수가 현재 큐에 저장된 가장 긴 작업보다 오래 걸리는 경우
-            if(!queue.isEmpty() && queue.peek() < days){
-                list.add(queue.size()); // 배포 후 큐 초기화
+            if(!queue.isEmpty() && queue.peek() < date){
+                list.add(queue.size());
                 queue.clear();
             }
-            
-            // 작업 일 수 큐에 추가
-            queue.offer(days);
+        
+            queue.offer(date);
         }
+        list.add(queue.size());
         
-        list.add(queue.size()); // 마지막 배포 작업 갯수 추가
-        
-        answer = new int[list.size()];
+        int[] result = new int[list.size()];
         for(int i = 0; i < list.size(); i++){
-            answer[i] = list.get(i);
+            result[i] = list.get(i);
         }
-        
-        return answer;
-   
-    
+            
+        return result;
     }
 }
