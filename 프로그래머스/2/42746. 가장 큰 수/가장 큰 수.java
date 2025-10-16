@@ -1,30 +1,18 @@
 import java.util.*;
 import java.io.*;
-/**
-* 10으로나눈 나머지가 가장 큰 순서대로 정렬할 것
-**/
+import java.util.stream.Collectors;
 
 class Solution {
     public String solution(int[] numbers) {
         String answer = "";
-        String[] arr = Arrays.stream(numbers)
-                    .mapToObj(String::valueOf)
-                    .toArray(String[]::new);
         
-        Arrays.sort(arr, (a,b) -> (b + a).compareTo(a + b));
+        List<String> list = Arrays.stream(numbers).mapToObj(String::valueOf).collect(Collectors.toList());
         
-        if(arr[0].equals("0")){
-            return "0";
-        }
+        Collections.sort(list, (a,b) -> (b + a).compareTo(a + b));
         
-        StringBuilder sb = new StringBuilder();
+        for(String word : list) answer += word;
         
-        for(String s : arr){
-            sb.append(s);
-        }
-        
-        answer = sb.toString();
-        
-        return answer;
+        if(answer.charAt(0) == '0') return "0";
+        else return answer;
     }
 }
