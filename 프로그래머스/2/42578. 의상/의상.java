@@ -2,17 +2,18 @@ import java.util.*;
 
 class Solution {
     public int solution(String[][] clothes) {
-        int answer = 0;
+        Map<String, Integer> map = new HashMap<>();
         
-        Map<String,Integer> countMap = new HashMap<>(); // 의상 종류별 갯수 map
+        int total = 1;
         
         for(String[] cloth : clothes){
-            countMap.put(cloth[1], countMap.getOrDefault(cloth[1], 0) + 1);
-        } 
+            map.put(cloth[1], map.getOrDefault(cloth[1], 0) + 1);
+        }
+
+        for(int value : map.values()){
+            total *= (value + 1);
+        }
         
-        answer += countMap.values().stream().map(count -> count + 1).reduce(1, (arr,x) -> arr * x) - 1;
-        
-        
-        return answer;
+        return total - 1;
     }
 }
