@@ -1,94 +1,94 @@
 import java.io.*;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
 
-    static int[][] tomato;
-    static Queue<Integer[]> queue = new LinkedList<>();
+    static int[] dy = new int[]{0,0,-1,1};
+    static int[] dx = new int[]{-1,1,0,0};
 
-    static int[] dy = {0, 0, -1, 1};
-    static int[] dx = {-1, 1, 0, 0};
-
-    static int N,M;
-    static int count = 0;
+    static int M,N;
+    static int[][] graph;
+    static boolean[][] visited;
+    static int count = -1;
+    static Queue<int[]> queue = new LinkedList<>();
 
     public static void main(String[] args) throws IOException {
-
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        // 가로 M, 세로 N
         M = Integer.parseInt(st.nextToken());
         N = Integer.parseInt(st.nextToken());
 
-        tomato = new int[N][M];
+        graph = new int[N][M];
+        visited = new boolean[N][M];
 
-        for (int i = 0; i < N; i++) {
+        for (int x = 0; x < N; x++) {
             st = new StringTokenizer(br.readLine());
-            for (int j = 0; j < M; j++) {
-                int num = Integer.parseInt(st.nextToken());
-                tomato[i][j] = num;
+            for (int y = 0; y < M; y++) {
+                int n = Integer.parseInt(st.nextToken());
+                graph[x][y] = n;
 
-                if (num == 1) {
-                    queue.offer(new Integer[]{i, j});
+                // 토마토가 있는 좌표 저장
+                if (n == 1) {
+                    queue.add(new int[]{x, y});
+                    visited[x][y] = true;
                 }
             }
         }
 
-        // 시작날을 제외한 최소 일수 반환
-        bw.write(String.valueOf(bfs()));
+        bfs();
+
+        for (int x = 0; x < N; x++) {
+            for (int y = 0; y < M; y++) {
+                if (graph[x][y] == 0) {
+                    bw.write(String.valueOf(-1));
+                    bw.flush();
+                    return;
+                }
+            }
+        }
+
+        bw.write(String.valueOf(count));
         bw.flush();
-        bw.close();
-        br.close();
-
-
     }
 
-
-    static int bfs() {
+    static void bfs() {
         while (!queue.isEmpty()) {
-            Integer[] now = queue.poll();
+            int size = queue.size();
 
-            // 현재 좌표
-            int cx = now[0];
-            int cy = now[1];
+            for (int i = 0; i < size; i++) {
+                int[] cur = queue.poll();
+                int cx = cur[0];
+                int cy = cur[1];
 
-            for (int i = 0; i < 4; i++) {
-                // 다음 이동할 좌표
-                int nx = cx + dx[i];
-                int ny = cy + dy[i];
+                for (int j = 0; j < 4; j++) {
+                    int nx = cx + dx[j];
+                    int ny = cy + dy[j];
 
-                if (nx >= 0 && ny >= 0 && nx < N && ny < M) {
-                    if (tomato[nx][ny] == 0) {
-                        queue.offer(new Integer[]{nx, ny});
-                        // 익는 날짜 체크를 위해 현재보다 1 높은 수로 변경
-                        tomato[nx][ny] = tomato[cx][cy] + 1;
+                    if (nx < 0 || ny < 0 || nx >= N || ny >= M) {
+                        continue;
+                    }
+
+                    if (graph[nx][ny] == -1) {
+                        continue;
+                    }
+
+                    if (graph[nx][ny] == 0 && !visited[nx][ny]) {
+                        queue.add(new int[]{nx, ny});
+                        graph[nx][ny] = 1;
+                        visited[nx][ny] = true;
                     }
                 }
             }
-        }
 
-        // 탐색 진행 후 안익은 토마토가 남아있을 경우 -1 출력
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < M; j++) {
-                if (tomato[i][j] == 0) {
-                    return -1;
-                }
-                // 안익은 토마토가 없을 경우 익는데 걸리는 최소 일수 체크
-                count = Math.max(count, tomato[i][j]);
-            }
-        }
+            count++;
 
-        // 모두 익은 토마토만 있었던 경우 0 반환
-        if (count == 1) {
-            return 0;
-        }else{
-            return count - 1;
+
+
         }
     }
-
 }
+
+
+
